@@ -9,7 +9,8 @@ class PurgeCommand extends Command {
                 {
                     id: 'amt',
                     match: 'content',
-                    type: 'integer'
+                    type: 'integer',
+                    default: 2
                 }
            ]
         });

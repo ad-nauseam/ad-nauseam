@@ -3,7 +3,7 @@ const { Command } = require('discord-akairo');
 class BanCommand extends Command {
     constructor() {
         super('ban', {
-           aliases: ['ban'],
+           aliases: ['ban', 'yeet'],
            args: [
                 {
                     id: 'id',
