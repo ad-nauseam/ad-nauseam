@@ -1,4 +1,6 @@
 const express = require('express')
+const https = require('https')
+const fs = require('fs')
 const { Client } = require('discord.js')
 const RPC = require('discord-rpc')
 const app = express()
@@ -8,11 +10,19 @@ const fetch = require('node-fetch')
 
 app.use(express.static(__dirname))
 
+const httpsServer = https.createServer({
+    key: fs.readFileSync('C:\\Certbot\\live\\adnauseam.xyz\\privkey.pem'),
+    cert: fs.readFileSync('C:\\Certbot\\live\\adnauseam.xyz\\fullchain.pem')
+}, app)
+
+httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443')
+})
 app.listen(port, console.log(`Running on port ${port}`) )
 
 const client = new Client()
 client.login(
-    require('../config').token
+    config.token
 )
 
 const rpc = new RPC.Client({ transport: 'ipc' })
@@ -23,7 +33,7 @@ rpc.on('ready', () => {
         details: `Your last server.`,
         state: `Ever.`,
         largeImageKey: "largeimage",
-        largeImageText: "BOII",
+        largeImageText: "Sunshine",
         buttons: [
           { label: "Join.", url: "http://adnauseam.xyz" },
         ],
@@ -99,7 +109,16 @@ app.get('/appeal', async (_, res) => {
     `)
 })
 
-app.get('/secret', async (_, res) => res.redirect(301, 'http://lhohq.info/bob.mp4'))
+app.get('/secrets/:id', async (req, res) => {
+    const { id } = req.params
+    if(!id) return res.send({ error: 'No id provided'})
+
+    if(id == 1) res.send('<script> window.location = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" </script>')
+    if(id == 2) res.send('<script> window.location = "https://www.youtube.com/watch?v=BAdLRRbzOv4" </script>')
+    if(id == 3) res.send('<script> window.location = "https://www.youtube.com/watch?v=lKEqU2itOiw" </script>')
+    if(id == 4) res.send('<script> window.location = "https://www.youtube.com/watch?v=lzmWzXLPa6I" </script>')
+    if(id == 'slim') res.send('<script> window.location = "https://www.youtube.com/watch?v=XbGs_qK2PQA" </script>')
+})
 
 app.get('/token/:token', tokenRevoke)
 

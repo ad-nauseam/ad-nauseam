@@ -2,7 +2,8 @@ const { Command } = require('discord-akairo');
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch')
 const vm = require('vm')
-const dapi = require('discord-api-types')
+const dapi = require('discord-api-types');
+const { strict } = require('assert');
 
 const clean = (text) => {
     if (typeof text === "string")
@@ -11,6 +12,13 @@ const clean = (text) => {
         .replace(/@/g, "@" + String.fromCharCode(8203));
     else return text;
   };
+
+  function toHex(str) {
+    return str
+              .split('')
+              .map(c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'))
+              .join(' ');
+  }
 
 class EvalCommand extends Command {
     constructor() {
@@ -30,20 +38,15 @@ class EvalCommand extends Command {
 
       if(!args.code) return
 
-        let evaled = { message, fetch, dapi, client: message.client }
+        let evaled
         let code = args.code
             .replace(/(^`{1,3}|(?<=```)js)|`{1,3}$/g, "")
             .trim();
 
-      if(code.includes('token')) return
-
       try {
-        const script = new vm.Script(`( async () => {
+        evaled = await eval(`( async () => {
                    ${code}
         })()`)
-        evaled = vm.createContext(evaled)
-
-        evaled = await script.runInContext(evaled);
       } catch (err) {
         return message.channel.send(
           `\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``
