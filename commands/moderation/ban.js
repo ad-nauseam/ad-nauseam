@@ -1,5 +1,5 @@
 const { Command } = require('discord-akairo');
-
+const utils = require("./../../utils.js")
 class BanCommand extends Command {
     constructor() {
         super('ban', {
@@ -24,11 +24,10 @@ class BanCommand extends Command {
     }
 
     async exec(message,args) {
-        let toBan = message.mentions.users.first() || await message.client.users.fetch(args.id).catch( () => {} );
-        let clientMember = message.guild.me;
+        let toBan = message.mentions.users.first() || await message.client.users.fetch(args.id).catch( () => {} );        
         
-        if (message.member.roles.highest.position <= clientMember.roles.highest.position) return;
-
+        if (!utils.isStaff(message.member)) return;
+        
         message.guild.members.ban(toBan, {reason : args.reason, days : args.days })
         .then( () => { 
             message.reply(`Banned **${toBan.tag}**`)
