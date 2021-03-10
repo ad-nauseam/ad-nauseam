@@ -31,13 +31,13 @@ class BanCommand extends Command {
 
         message.guild.members.ban(toBan, {reason : args.reason, days : args.days })
         .then(banned => { 
-            message.channel.send(`Banned **${toBan.tag}**`)
+            message.reply(`Banned **${toBan.tag}**`)
             /*
             Logging + DB Stuff here
             */
     
         })
-        .catch(err => message.channel.send('Cannot ban this user'));
+        .catch(err => message.reply('Cannot ban this user'));
         
     }
 }
