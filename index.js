@@ -60,14 +60,16 @@ class ClydeClient extends AkairoClient {
         .finally(() => this.login(config.token))
         // loads db based guild configs(only swear words for now) before logging in[pls forgib me for making yet again another bloat. can remove if you want] 
         if(config.isMain) {
-            this.ws.on('INTERACTION_CREATE', (interaction) => {
-                const name = interaction.data.name
-                require(`./Interactions/${name}.js`)(this, interaction)
-            })
-        }
+        this.ws.on('INTERACTION_CREATE', (interaction) => {
+            const name = interaction.data.name
+            require(`./Interactions/${name}.js`)(this, interaction)
+        })
+    }
     }
 }
 
 const client = new ClydeClient();
-client.init();
+client.init()/*.then(async () => {
+    console.log(await (require('./Interactions/commands/github'))(client))
+})*/
 
