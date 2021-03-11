@@ -23,9 +23,10 @@ class KickCommand extends Command {
         if(message.member.roles.highest.position <= message.guild.me.roles.highest.position) return
 
         toKick.kick(args.reason).then(member => {
-            message.channel.send(`Successfully kicked **${toKick.user.tag}**`)
+            message.reply(`Successfully kicked **${toKick.user.tag}**`)
+            message.client.emit('guildMemberRemove', toKick, message.author);
         })
-        .catch(err => message.channel.send('Cannot kick this user'));
+        .catch(err => message.channel.send('Cannot kick this user') );
         
     }
 }

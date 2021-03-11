@@ -27,14 +27,12 @@ class BanCommand extends Command {
         let toBan = message.mentions.users.first() || await message.client.users.fetch(args.id).catch( () => {} );        
         
         if (!utils.isStaff(message.member)) return;
-        
+
         message.guild.members.ban(toBan, {reason : args.reason, days : args.days })
         .then( () => { 
-            message.reply(`Banned **${toBan.tag}**`)
-            /*
-            Logging + DB Stuff here
-            */
-    
+            message.reply(`Banned **${toBan.tag}**`);
+            message.client.emit('guildBanAdd', message.guild, toBan, message.author);
+                
         })
         .catch( () => message.reply('Cannot ban this user'));
         
