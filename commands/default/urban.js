@@ -15,8 +15,8 @@ class UrbanCommand extends Command {
         });
     }
 
-    async execute(message, args) {
-        const term = args.con.join(' ');
+    async exec(message, args) {
+        const term = args.con;
 		const res = await fetch(`http://api.urbandictionary.com/v0/define?term=${term}`);
         const data = (await res.json()).list[0];
 
