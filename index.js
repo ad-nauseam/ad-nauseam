@@ -25,16 +25,19 @@ class ClydeClient extends AkairoClient {
             directory: './commands/',
             prefix: config.prefix // or ['?', '!']
         });
-        this.listenerHandler = new ListenerHandler(this, {
-            directory: './listeners/'
-        });
+        if(config.isMain){
+            this.listenerHandler = new ListenerHandler(this, {
+                directory: './listeners/'
+        });}
 
         this.config = config
         this.sql = sql
         this.swearWords = [];
         
         this.commandHandler.useListenerHandler(this.listenerHandler);
-        this.listenerHandler.loadAll();
+        if(config.isMain){
+            this.listenerHandler.loadAll();
+        }
         this.commandHandler.loadAll();
         this.twitter = TwitterClient
 
