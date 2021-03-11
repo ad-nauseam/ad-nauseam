@@ -25,16 +25,19 @@ class ClydeClient extends AkairoClient {
             directory: './commands/',
             prefix: config.prefix // or ['?', '!']
         });
-        this.listenerHandler = new ListenerHandler(this, {
-            directory: './listeners/'
-        });
+        if(config.isMain){
+            this.listenerHandler = new ListenerHandler(this, {
+                directory: './listeners/'
+        });}
 
         this.config = config
         this.sql = sql
         this.swearWords = [];
         
         this.commandHandler.useListenerHandler(this.listenerHandler);
-        this.listenerHandler.loadAll();
+        if(config.isMain){
+            this.listenerHandler.loadAll();
+        }
         this.commandHandler.loadAll();
         this.twitter = TwitterClient
 
@@ -56,10 +59,12 @@ class ClydeClient extends AkairoClient {
         .catch(console.error)
         .finally(() => this.login(config.token))
         // loads db based guild configs(only swear words for now) before logging in[pls forgib me for making yet again another bloat. can remove if you want] 
-        this.ws.on('INTERACTION_CREATE', (interaction) => {
-            const name = interaction.data.name
-            require(`./Interactions/${name}.js`)(this, interaction)
-        })
+        if(config.isMain) {
+            this.ws.on('INTERACTION_CREATE', (interaction) => {
+                const name = interaction.data.name
+                require(`./Interactions/${name}.js`)(this, interaction)
+            })
+        }
     }
 }
 
