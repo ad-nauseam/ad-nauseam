@@ -16,6 +16,7 @@ class UrbanCommand extends Command {
     }
 
     async exec(message, args) {
+        if (!message.channel.nsfw) return message.channel.send('Use an nsfw channel for this cmd');
         const term = args.con;
 		const res = await fetch(`http://api.urbandictionary.com/v0/define?term=${term}`);
         const data = (await res.json()).list[0];
