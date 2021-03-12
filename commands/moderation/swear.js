@@ -33,17 +33,17 @@ class SwearCommand extends Command {
             if(add.length > 0) {
                 add.forEach(async a => {
                     if(this.client.swearWords.includes(a)) return;
-                    added++
+                    added++;
                     this.client.swearWords.push(a);
-                    await this.client.sql`update guild set swears = array_append(swears, ${a})`
+                    await this.client.sql`update guild set swears = array_append(swears, ${a})`;
                 })
             }
             if(remove.length > 0) {
                 remove.forEach(async r => {
                     if(!this.client.swearWords.includes(r)) return;
-                    removed++
+                    removed++;
                     this.client.swearWords = this.client.swearWords.filter(w => w.toLowerCase() != r.toLowerCase());
-                    await this.client.sql`update guild set swears = array_remove(swears, ${r})`
+                    await this.client.sql`update guild set swears = array_remove(swears, ${r})`;
                 })
             }
         if(args.list){

@@ -17,13 +17,13 @@ class KickCommand extends Command {
     }
 
     async exec(message,args) {
-        let toKick = message.mentions.members.first() || await message.guild.members.fetch(args.id).catch(() => null)
-        if(!toKick) return message.reply('You need to provide a valid user to kick!')
+        let toKick = message.mentions.members.first() || await message.guild.members.fetch(args.id).catch(() => null);
+        if(!toKick) return message.reply('You need to provide a valid user to kick!');
         
-        if(message.member.roles.highest.position <= message.guild.me.roles.highest.position) return
+        if(message.member.roles.highest.position <= message.guild.me.roles.highest.position) return;
 
         toKick.kick(args.reason).then(member => {
-            message.reply(`Successfully kicked **${toKick.user.tag}**`)
+            message.reply(`Successfully kicked **${toKick.user.tag}**`);
             message.client.emit('guildMemberRemove', toKick, message.author);
         })
         .catch(err => message.channel.send('Cannot kick this user') );
