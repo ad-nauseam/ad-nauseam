@@ -13,6 +13,7 @@ class KickLogListener extends Listener {
         let logChannel = member.guild.channels.cache.find(ch => ch.name.toLowerCase() == 'clyde-logs');
         if ( !logChannel ) return;
         let audit = (await member.guild.fetchAuditLogs()).entries.first();
+        if (Date.now() - audit.createdTimestamp > 5000) return;
         let executor = author || audit.executor;
         if ( executor.id == member.guild.me.user.id ) return;
         let reason = `${audit.reason?`\n**Reason : **${audit.reason}`:""}`;
