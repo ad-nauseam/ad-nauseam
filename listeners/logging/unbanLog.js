@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed } = require('discord.js');
 
 class UnbanLogListener extends Listener {
     constructor() {
