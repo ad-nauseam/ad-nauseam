@@ -15,13 +15,20 @@ class UserCommand extends Command {
     }
 
     async exec(message,args) {
-        let member = message.mentions.members.first() || await message.guild.members.fetch(args.id);
-
+        let member = message.mentions.members.first() || (args.id?await message.guild.members.fetch(args.id):message.member);
+        let { user } = member
         let embed = new MessageEmbed()
-        .setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL())
-        .setTitle(`${member.user.tag} (${member.user.id})`)
-        .setThumbnail(member.user.displayAvatarURL())
+        .setAuthor(`${user.id}`)
+        .setTitle(`${user.tag}`)
+        .setThumbnail(user.displayAvatarURL())
+        .addField("Nickname", member.nickname || "none", true)
+        .addField("Activity", user.presence.activities[0]?.details,true)
         .addField("Highest role", member.roles.highest.name)
+        .addField("Account created:", `${user.createdAt.toLocaleDateString('en-GB')},\n${user.createdAt.toLocaleTimeString('en-GB')}`, true)
+        .addField("Joined at:", `${member.joinedAt.toLocaleDateString('en-GB')},\n${member.joinedAt.toLocaleTimeString('en-GB')}`, true)
+        
+        message.reply(embed)
+
     }
 }
 

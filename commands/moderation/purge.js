@@ -1,5 +1,5 @@
 const { Command } = require('discord-akairo');
-const utils = require("./../../utils.js")
+const utils = require("./../../utils/utils.js")
 
 class PurgeCommand extends Command {
     constructor() {
