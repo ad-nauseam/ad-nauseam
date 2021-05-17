@@ -1,5 +1,5 @@
 const { Command } = require('discord-akairo');
-const { dice } = require('./../../utils/dice.js')
+const { unbanDice } = require('./../../utils/dice.js')
 class UnbanCommand extends Command {
     constructor() {
         super('unban', {
@@ -21,7 +21,7 @@ class UnbanCommand extends Command {
         if(!to){
             let list = await message.guild.fetchBans()
             if (!list.size) return message.reply("there are no banned members")
-            list = list.map(x => [x.user, dice(args.id, x.user.tag)]).sort((a,b) => b[1] - a[1])
+            list = unbanDice(list.map(x => x.user), args.id).sort((a,b) => b[1] - a[1])
             if ( list[0][1] > 0.6 ) to = list[0][0]
             else{
                 return message.reply(`no close matches, are you looking for\`\`\`\n${list.slice(0,6).map(x => x[0].tag).join("\n")}\`\`\``)
